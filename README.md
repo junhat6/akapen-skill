@@ -18,46 +18,34 @@ Codexを優先した設計で、Claude Codeは互換経路です。OpenCodeの�
 
 ## インストール
 
-次のどちらか1つの方法を選んでください。どちらもユーザー用の配置で、複数のプロジェクトから使えます。
-
-| 利用するエージェント | 配置先 |
-|---|---|
-| Codex | `~/.agents/skills/akapen` |
-| Claude Code | `~/.claude/skills/akapen` |
-
-以下はmacOS / Linuxのターミナル用です。Windowsでは利用するエージェントと同じ環境に配置し、パスやPythonのコマンドを読み替えてください（Windowsでの動作は未検証）。既存の `akapen` がある場合は、内容を確認してバックアップするまで上書きしないでください。
+次のどちらか1つの方法を選んでください。以下はmacOS / Linuxのターミナル用です。WindowsではパスやPythonのコマンドを読み替えてください（Windowsでの動作は未検証）。既存の `akapen` がある場合は、内容を確認してバックアップしてから更新してください。
 
 ### 方法1：GitHub CLIでインストール
 
-`gh skill --help` が使えるGitHub CLIが必要です。`gh skill` はプレビュー機能のため仕様変更があります。コマンドが見つからなければ方法2を使ってください。
-
-まず内容を確認します。このリポジトリではSkillが `akapen/` にあるため、パスを `akapen/SKILL.md` と指定します。
+`gh skill --help` が使えるGitHub CLIが必要です（プレビュー機能）。使えない場合は方法2へ進んでください。
 
 ```sh
 gh skill preview junhat6/akapen-skill akapen/SKILL.md
+gh skill install junhat6/akapen-skill akapen/SKILL.md
 ```
 
-**Codexの場合：**
+ターミナルの対話画面で次のように選びます。
 
-```sh
-if [ -e ~/.agents/skills/akapen ] || [ -L ~/.agents/skills/akapen ]; then
-  echo '既存の akapen があります。上書きせず内容を確認してください。'
-else
-  gh skill install junhat6/akapen-skill akapen/SKILL.md --agent codex --scope user
-fi
-```
+1. **Select target agent(s)**：矢印キーで移動し、Spaceで **Codex** または **Claude Code** を選択してEnter。両方も選べます。初期選択のGitHub Copilotが不要ならSpaceで外します。
+2. **Installation scope**：複数のプロジェクトで使うなら **Global**、今のGitリポジトリだけなら **Project** を選んでEnter。
 
-**Claude Codeの場合：**
+| 選択 | Codexの配置先 | Claude Codeの配置先 |
+|---|---|---|
+| Global | `~/.agents/skills/akapen` | `~/.claude/skills/akapen` |
+| Project | `.agents/skills/akapen` | `.claude/skills/akapen` |
 
-```sh
-if [ -e ~/.claude/skills/akapen ] || [ -L ~/.claude/skills/akapen ]; then
-  echo '既存の akapen があります。上書きせず内容を確認してください。'
-else
-  gh skill install junhat6/akapen-skill akapen/SKILL.md --agent claude-code --scope user
-fi
-```
+**画面の例**：提供された導入動画から、共通の選択操作だけを切り出しています。別Skillの導入動画のため、上の赤ペン先生用コマンドを使ってください。画像中のOpenCodeは操作例に含まれますが、赤ペン先生での動作は未検証です。
 
-`--scope user` を含めて実行してください。省略するとプロジェクト単位の配置になります。
+![エージェント選択：矢印で移動しSpaceで選択](docs/images/install-agent.png)
+
+![配置範囲：ProjectとGlobalから選択](docs/images/install-scope.png)
+
+対話できる通常のターミナルで実行してください。パイプ経由など非対話実行では選択画面が出ず、既定値（GitHub Copilot・Project）が使われます。`akapen/SKILL.md` はこのリポジトリの実際のSkillパスです。
 
 ### 方法2：git cloneして手動で配置
 
@@ -68,28 +56,20 @@ git clone https://github.com/junhat6/akapen-skill.git
 cd akapen-skill
 ```
 
-続けて、利用するエージェントのコマンドを実行します。
+続けて、利用するエージェントのコマンドを実行します。以下は配置先に `akapen` がまだない場合の手順です。既にある場合は「更新」を参照してください。
 
 **Codexの場合：**
 
 ```sh
 mkdir -p ~/.agents/skills
-if [ -e ~/.agents/skills/akapen ] || [ -L ~/.agents/skills/akapen ]; then
-  echo '既存の akapen があります。上書きせず内容を確認してください。'
-else
-  cp -R akapen ~/.agents/skills/akapen
-fi
+cp -R akapen ~/.agents/skills/akapen
 ```
 
 **Claude Codeの場合：**
 
 ```sh
 mkdir -p ~/.claude/skills
-if [ -e ~/.claude/skills/akapen ] || [ -L ~/.claude/skills/akapen ]; then
-  echo '既存の akapen があります。上書きせず内容を確認してください。'
-else
-  cp -R akapen ~/.claude/skills/akapen
-fi
+cp -R akapen ~/.claude/skills/akapen
 ```
 
 `SKILL.md` だけでなく、`assets`・`references`・`agents` を含む `akapen` フォルダ全体をコピーします。
