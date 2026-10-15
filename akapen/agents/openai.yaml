@@ -1,0 +1,6 @@
+interface:
+  display_name: "赤ペン先生 (akapen)"
+  short_description: "実装前の案をHTMLで見せ、回答・指摘・添削を受け取る"
+  default_prompt: "Use $akapen to show me one proposal for red-pen review before implementation."
+policy:
+  allow_implicit_invocation: true
